@@ -13,24 +13,32 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="processor">
-      <UniqueIdentifier>{6a9cbab4-038c-44c8-a6b2-7ac2f625b79a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="settings">
-      <UniqueIdentifier>{98125dfa-e329-48bb-9e0b-20881227ce1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sever">
-      <UniqueIdentifier>{e2e2da0b-d3c9-4aa4-a715-459d311e5b9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="threadpool">
-      <UniqueIdentifier>{1f816393-a133-4f2e-9de3-b5d7663e9e39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="async">
-      <UniqueIdentifier>{1a294c97-8483-43d5-86f1-15f9a61d1974}</UniqueIdentifier>
+    <Filter Include="ezdlib">
+      <UniqueIdentifier>{d12a882c-1b86-45c9-b38e-d4f0cbecbdfe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ItvTestTask.cpp">
+    <ClInclude Include="graphics.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="position.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="font.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="canvas.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="api.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="graphics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

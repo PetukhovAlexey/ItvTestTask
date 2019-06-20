@@ -1,0 +1,4 @@
+#ifndef __GRAPHICS_GRAPHICS_H__
+#define __GRAPHICS_GRAPHICS_H__
+
+#endif//__GRAPHICS_GRAPHICS_H__
