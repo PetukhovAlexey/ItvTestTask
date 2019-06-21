@@ -22,11 +22,16 @@
     <ClInclude Include="api.h" />
     <ClInclude Include="canvas.h" />
     <ClInclude Include="color.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="exception.h" />
     <ClInclude Include="font.h" />
+    <ClInclude Include="functions.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="position.h" />
+    <ClInclude Include="size.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="color.cpp" />
     <ClCompile Include="graphics.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

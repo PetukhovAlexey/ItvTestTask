@@ -3,31 +3,38 @@
 
 namespace graphics
 {
-  template <class BaseT>
-  class color
+  namespace ezdlib
   {
-  protected:
-    color(const BaseT& c):
-      _color(c)
-    {}
-
-  public:
-    virtual ~color() = default;
-
-  public:
-    operator BaseT() const
+    class color
     {
-      return _color;
-    }
+    protected:
+      color(const int& c) :
+        _color(c)
+      {}
 
-    color& operator= (const BaseT& c)
-    {
-      _color = c;
-    }
+    public:
+      virtual ~color() = default;
 
-  private:
-    BaseT _color;
-  };
+    public:
+      operator int() const
+      {
+        return _color;
+      }
+
+      color& operator= (const int& c)
+      {
+        _color = c;
+      }
+
+    public:
+      static const color gray;
+      static const color white;
+      static const color black;
+
+    private:
+      int _color;
+    };
+  }
 }
 
 #endif//__GRAPHICS_COLOR_H__

@@ -3,25 +3,30 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <iostream>
 
-#include <graphics/font.h>
-#include <graphics/canvas.h>
+#include <graphics/graphics.h>
 
 #pragma warning(disable:4996)
 
 
 int main(int argc, char* argv[])
 {
-  using namespace graphics::ezdlib;
-  using namespace graphics::ezdlib::api;
+  using namespace graphics;
 
-  font def_font(font::types::medium, 0, font::flags::none);
-  canvas def_canvas(640, -480, 24, 0);
-  def_canvas.fill(0x606060);
+  try {
+    font def_font(font::types::medium, 0, font::flags::none);
+    canvas def_canvas(size(640, -480), bpp::b32, canvas::flags::none);
+    def_canvas.fill(color::white);
 
-  // Draw some familiar text
-  ezd_text(def_canvas, def_font, "Hello World!", -1, 10, 10, 0xffffff);
-  def_canvas.save("test.bmp");
+    print_text(def_canvas, def_font, "Hello World!", position(10, 10), color::black);
+
+    def_canvas.save("test.bmp");
+  }
+  catch (const std::exception &e)
+  {
+    std::cout << "error:" << e.what() << std::endl;
+  }
 
   return 0;
 }

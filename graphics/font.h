@@ -2,6 +2,7 @@
 #define __GRAPHICS_FONT_H__
 
 #include "api.h"
+#include "exception.h"
 
 namespace graphics
 {
@@ -63,35 +64,38 @@ namespace graphics
 
     public:
       inline font(const type& type, int size = 0, flags flag = flags::none):
-        _handle(nullptr),
-        _type(type),
-        _size(size),
-        _flag(flag)
+        _handle(nullptr)
       {
+        _handle = api::ezd_load_font(type, size, static_cast<int>(flag));
       }
 
       virtual ~font()
       {
-        close();
+        destroy();
       }
 
 
       operator handle_t()
       {
-        return open();
+        return get_handle();
       }
-
     private:
-      inline handle_t open()
+      inline handle_t get_handle() const
       {
-        if (_handle == nullptr)
+        if (!check())
         {
-          _handle = api::ezd_load_font(_type, _size, static_cast<int>(_flag));
+          throw exception("create font exception");
         }
         return _handle;
       }
 
-      inline void close()
+      inline bool check() const
+      {
+        return _handle != nullptr;
+      }
+
+    public:
+      inline void destroy()
       {
         if (_handle != nullptr)
         {
@@ -100,11 +104,13 @@ namespace graphics
         }
       }
 
+      inline operator bool() const
+      {
+        return check();
+      }
+
     private:
       handle_t _handle;
-      type _type;
-      int _size;
-      flags _flag;
     };
   }
 }

@@ -3,37 +3,45 @@
 
 namespace graphics
 {
-  template<typename T>
-  class position
+  namespace base
   {
-  public:
-    virtual ~position() = default;
-
-  public:
-    virtual T x() const 
+    template<typename T>
+    class position
     {
-      return _x;
-    }
+    public:
+      inline position(const T& x = T(), const T& y = T()) :
+        _x(x),
+        _y(y)
+      {}
 
-    virtual T y() const
-    {
-      return _y;
-    }
+      virtual ~position() = default;
 
-    virtual void x(const T& x)
-    {
-      _x = x;
-    }
+    public:
+      virtual T x() const
+      {
+        return _x;
+      }
 
-    virtual void y(const T& y)
-    {
-      _y = y;
-    }
+      virtual T y() const
+      {
+        return _y;
+      }
 
-  private:
-    T _x;
-    T _y;
-  };
+      virtual void x(const T& x)
+      {
+        _x = x;
+      }
+
+      virtual void y(const T& y)
+      {
+        _y = y;
+      }
+
+    private:
+      T _x;
+      T _y;
+    };
+  }
 } 
 
 #endif//__GRAPHICS_POSITION_H__

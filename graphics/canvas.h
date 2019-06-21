@@ -2,55 +2,84 @@
 #define __GRAPHICS_CANVAS_H__
 
 #include "api.h"
+#include "color.h"
+#include "config.h"
+#include "exception.h"
 
 namespace graphics
 {
   namespace ezdlib
   {
+    enum class color_format
+    {
+      monochrome = 1,
+      rgb = 24,
+      rgba = 32
+    };
+
     class canvas
     {
     public:
       typedef api::HEZDIMAGE handle_t;
 
     public:
-      canvas(int width, int height, int bits_per_pixel, int flags):
-        _width(width),
-        _height(height),
-        _bits_per_pixel(bits_per_pixel),
-        _flags(flags)
-      {}
+      enum class flags
+      {
+        none = 0,
+        user_image_buffer = EZD_FLAG_USER_IMAGE_BUFFER
+      };
+
+    public:
+      canvas(const size& size, color_format bits_per_pixel, flags flags):
+        _handle(nullptr)
+      {
+        _handle = api::ezd_create(size.width(), size.height(), static_cast<int>(bits_per_pixel), static_cast<int>(flags));
+      }
+
       virtual ~canvas()
       {
-        close();
+        destroy();
       }
 
     public:
-      inline operator handle_t()
+      inline operator handle_t() const
       {
-        return open();
+        return get_handle();
       }
 
-    public:
-      inline handle_t open()
+    private:
+      inline handle_t get_handle() const
       {
-        if (_handle == nullptr)
+        if (!check())
         {
-          _handle = api::ezd_create(_width, _height, _bits_per_pixel, _flags);
+          throw exception("initialize image error");
         }
         return _handle;
       }
 
-      inline void fill(int color)
+      inline bool check() const
       {
-        api::ezd_fill(open(), color);
+        return _handle != nullptr;
       }
 
-      inline void save(const char* file_name)
+    public:
+      inline void fill(color color) const
       {
-        api::ezd_save(open(), file_name);
+        if (api::ezd_fill(get_handle(), color) == 0)
+        {
+          throw exception("fill canvas exception");
+        }
       }
 
-      inline void close()
+      inline void save(const char* file_name) const
+      {
+        if (api::ezd_save(get_handle(), file_name) == 0)
+        {
+          throw exception("save image error");
+        }
+      }
+
+      inline void destroy()
       {
         if (_handle != nullptr)
         {
@@ -59,12 +88,13 @@ namespace graphics
         }
       }
 
+      inline operator bool() const
+      {
+        return check();
+      }
+
     private:
       handle_t _handle;
-      int _width;
-      int _height;
-      int _bits_per_pixel;
-      int _flags;
 
     };
   }

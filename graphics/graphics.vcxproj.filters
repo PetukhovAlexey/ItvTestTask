@@ -30,15 +30,30 @@
     <ClInclude Include="canvas.h">
       <Filter>ezdlib</Filter>
     </ClInclude>
+    <ClInclude Include="api.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
     <ClInclude Include="color.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="size.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="api.h">
+    <ClInclude Include="functions.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="exception.h">
       <Filter>ezdlib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="color.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
