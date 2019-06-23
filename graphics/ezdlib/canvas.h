@@ -11,6 +11,7 @@ namespace graphics
 {
   namespace ezdlib
   {
+    int count_line_size(int width, int bytes_for_pixel, int align = 4);
     enum class bpp
     {
       b1 = 1,
@@ -94,6 +95,17 @@ namespace graphics
         set_image_buffer();
       }
 
+      inline void get_line(int line_count, buffer_type& buffer) const
+      {
+        size_type sz= size();
+        const unsigned char * img_ptr = (const unsigned char *)api::ezd_get_image_ptr(get_handle());
+        int line_size = count_line_size(sz.width(), 3);
+        const unsigned char * img_ptr_start = line_size * line_count + img_ptr;
+        const unsigned char * img_ptr_finish = line_size * (line_count + 1) + img_ptr;
+
+        std::copy(img_ptr_start, img_ptr_finish, buffer.begin());
+      }
+
       inline void save(const char* file_name) const
       {
         if (api::ezd_save(get_handle(), file_name) == 0)
@@ -106,14 +118,24 @@ namespace graphics
       {
         if (_handle != nullptr)
         {
-          //api::ezd_destroy(_handle);
+          api::ezd_destroy(_handle);
           _handle = nullptr;
         }
+      }
+
+      unsigned long get_image_memory_size() const
+      {
+        return api::ezd_get_image_size(get_handle()) + api::ezd_header_size();
       }
 
       inline operator bool() const
       {
         return check();
+      }
+
+      size_type size() const
+      {
+        return size_type(api::ezd_get_width(_handle), std::abs(api::ezd_get_height(_handle)));
       }
 
     private:

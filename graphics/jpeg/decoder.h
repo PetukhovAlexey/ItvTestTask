@@ -7,69 +7,52 @@
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <graphics/jpeg/stream.h>
 
 namespace graphics
 {
   namespace jpeg
   {
-    class decoder
+    class decoder:
+      public decompress_stream
     {
     public:
-      typedef api::jpeg_decompress_struct stream_t;
-      typedef api::j_decompress_ptr handle_t;
-      typedef api::jpeg_error_mgr error_mgr_t;
-      typedef api::j_common_ptr common_ptr_t;
-
-    public:
       inline decoder() :
-        _handle(new stream_t{ 0 }),
-        _error_mgr{ 0 }
+        decompress_stream()
       {
         build();
-
       }
 
-    public:
-      operator handle_t() const
+      ~decoder()
       {
-        return handle();
-      }
-
-      void initialize(const buffer_type& binJpg)
-      {
-        api::jpeg_mem_src(handle(), (const unsigned char*)&binJpg[0], binJpg.size());
+        destroy();
       }
 
     private:
-      handle_t handle() const
-      {
-        return _handle.get();
-      }
-
       void build()
       {
-        _handle->client_data = this;
-        {
-          using namespace api;
-          jpeg_create_decompress(_handle.get());
-        }
-
-        handle()->err = api::jpeg_std_error(&_error_mgr);
-        _error_mgr.error_exit = error_manager;
+        using namespace api;
+        jpeg_create_decompress(handle());
       }
 
     public:
-      size image_size() const
+      canvas decompress(const buffer_type& binJpg)
       {
-        return size(handle()->image_width, handle()->image_height);
+        api::jpeg_mem_src(handle(), (const unsigned char*)&binJpg[0], binJpg.size());
+        return decompress();
       }
 
-    public:
+    private:
       canvas decompress()
       {
         buffer_type res; 
         decompress_image_buffer(res);
         return to_canvas(std::move(res));
+      }
+
+      void destroy()
+      {
+        api::jpeg_destroy_decompress(handle());
       }
 
     private:
@@ -127,19 +110,10 @@ namespace graphics
       }
 
     private:
-      static api::noreturn_t error_manager(common_ptr_t handle)
-      {
-        ((decoder*)handle->client_data)->throw_error();
-      }
-
-      void throw_error()
+      void throw_error() override
       {
         throw exception("decompress jpeg exception");
       }
-
-    private:
-      std::shared_ptr<stream_t> _handle;
-      error_mgr_t _error_mgr;
 
     };
 

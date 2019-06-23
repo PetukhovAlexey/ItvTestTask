@@ -25,6 +25,7 @@
   <ItemGroup>
     <ClInclude Include="canvas.h" />
     <ClInclude Include="color.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="decoder.h" />
     <ClInclude Include="encoder.h" />
     <ClInclude Include="exception.h" />
@@ -44,6 +45,8 @@
     <ClInclude Include="jpeg\encoder.h" />
     <ClInclude Include="jpeg\exception.h" />
     <ClInclude Include="jpeg\functions.h" />
+    <ClInclude Include="jpeg\memory_stream.h" />
+    <ClInclude Include="jpeg\stream.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="size.h" />
   </ItemGroup>

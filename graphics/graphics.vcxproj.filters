@@ -98,5 +98,14 @@
     <ClInclude Include="exception.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="jpeg\stream.h">
+      <Filter>jpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="jpeg\memory_stream.h">
+      <Filter>jpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ namespace graphics
       api::ezd_text(canvas, font, text.c_str(), -1, pos.x(), pos.y(), color);
     }
 
-    inline int count_line_size(int width, int bytes_for_pixel, int align = 4)
+    inline int count_line_size(int width, int bytes_for_pixel, int align)
     {
       return EZD_SCANWIDTH(width, bytes_for_pixel * CHAR_BIT, align);
     }
