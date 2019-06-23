@@ -42,6 +42,8 @@ namespace graphics
       T _height;
     };
   }
+
+  using size = base::size<int>;
 }
 
 #endif//__GRAPHICS_SIZE_H__

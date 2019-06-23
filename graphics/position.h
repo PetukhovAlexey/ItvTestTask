@@ -42,6 +42,8 @@ namespace graphics
       T _y;
     };
   }
+
+  using position = base::position<int>;
 } 
 
 #endif//__GRAPHICS_POSITION_H__

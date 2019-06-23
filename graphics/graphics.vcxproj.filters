@@ -16,45 +16,87 @@
     <Filter Include="ezdlib">
       <UniqueIdentifier>{d12a882c-1b86-45c9-b38e-d4f0cbecbdfe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="jpeg">
+      <UniqueIdentifier>{9ed6915d-92a5-4953-b112-8aa036e1a020}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="graphics.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ezdlib\color.cpp">
+      <Filter>ezdlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ezdlib\api.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ezdlib\canvas.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ezdlib\color.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ezdlib\config.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ezdlib\exception.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ezdlib\font.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ezdlib\functions.h">
+      <Filter>ezdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="canvas.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="font.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="functions.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
     <ClInclude Include="graphics.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="position.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="font.h">
-      <Filter>ezdlib</Filter>
-    </ClInclude>
-    <ClInclude Include="canvas.h">
-      <Filter>ezdlib</Filter>
-    </ClInclude>
-    <ClInclude Include="api.h">
-      <Filter>ezdlib</Filter>
-    </ClInclude>
-    <ClInclude Include="color.h">
-      <Filter>ezdlib</Filter>
-    </ClInclude>
     <ClInclude Include="size.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="functions.h">
-      <Filter>ezdlib</Filter>
+    <ClInclude Include="jpeg\decoder.h">
+      <Filter>jpeg</Filter>
     </ClInclude>
-    <ClInclude Include="config.h">
-      <Filter>ezdlib</Filter>
+    <ClInclude Include="jpeg\encoder.h">
+      <Filter>jpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="decoder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="encoder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="jpeg\api.h">
+      <Filter>jpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="jpeg\config.h">
+      <Filter>jpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="jpeg\functions.h">
+      <Filter>jpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="jpeg\exception.h">
+      <Filter>jpeg</Filter>
     </ClInclude>
     <ClInclude Include="exception.h">
-      <Filter>ezdlib</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="graphics.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="color.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
