@@ -10,85 +10,112 @@
 #include <graphics/jpeg/decoder.h>
 #include <graphics/jpeg/encoder.h>
 #include <jpeglib/jpeglib.h>
+#include <network/network.h>
+#include <core/instance.h>
+#include <core/settings/server.h>
+
 #include <setjmp.h>
 #include <vector>
 #include <iterator>
 
-#pragma warning(disable:4996)
-
-
-
-void do_work(graphics::canvas& def_canvas, graphics::font& def_font)
+std::string append_text_in_jpeg(core::server::instance& instance, const std::string& image_buffer, const std::string& message)
 {
-  def_canvas.fill(graphics::color::white);
-  print_text(def_canvas, def_font, "Hello World!", graphics::position(10, 10), graphics::color::black);
-  def_canvas.save("out.test_app_text.bmp");
-}
-
-void test_app_text()
-{
-  using namespace graphics;
-
-  font def_font(font::types::medium, 0, font::flags::none);
-  canvas def_canvas(size(640, -480), graphics::bpp::b24, canvas::flags::none);
-  do_work(def_canvas, def_font);
-}
-
-void test_decode_jpeg()
-{
-  std::ifstream file("input.jpg", std::ios::binary);
-
   graphics::decoder decoder;
 
-  graphics::canvas image = decoder.decompress(graphics::buffer_type(std::istreambuf_iterator<char>(file), {}));
-
-  image.save("out.test_decode_jpeg.bmp");
-}
-
-void test_encode_jpeg()
-{
-  using namespace graphics;
-
-  font def_font(font::types::medium, 20, font::flags::none);
-  canvas def_canvas(size(227, -149), graphics::bpp::b24, canvas::flags::none);
-  def_canvas.fill(color::white);
-
-  print_text(def_canvas, def_font, "Hello World!", position(10, 10), color::black);
-
-  def_canvas.save("out.test_encode_jpeg.bmp");
-
-  graphics::encoder encoder;
-
-  graphics::buffer_type encoded = encoder.compress(def_canvas, 65);
-  std::ofstream out_file("out.test_encode_jpeg.jpg", std::ios::binary);
-  std::copy(encoded.begin(), encoded.end(), std::ostreambuf_iterator<char>(out_file));
-}
-
-void test_app_text_in_jpeg()
-{
-  std::ifstream file("input.jpg", std::ios::binary);
-
-  graphics::decoder decoder;
-
-  graphics::canvas image = decoder.decompress(graphics::buffer_type(std::istreambuf_iterator<char>(file), {}));
+  graphics::canvas image = decoder.decompress(graphics::buffer_type(image_buffer.begin(), image_buffer.end()));
   graphics::font font(graphics::font::types::medium, 20, graphics::font::flags::none);
 
-  print_text(image, font, "Hello World!", graphics::position(10, 10), graphics::color::black);
+  print_text(image, font, message, graphics::position(10, 10), graphics::color::black);
 
   graphics::encoder encoder;
 
-  graphics::buffer_type encoded = encoder.compress(image, 65);
-  std::ofstream out_file("out.test_app_text_in_jpeg.jpg", std::ios::binary);
-  std::copy(encoded.begin(), encoded.end(), std::ostreambuf_iterator<char>(out_file));
+  graphics::buffer_type encoded = encoder.compress(image, instance.settings()->jpeg_quality());
+  return std::string(encoded.begin(), encoded.end());
+}
+
+network::Response make_error_response(network::response_statuses status,std::string message)
+{
+  network::Response r;
+  r.set_status(status);
+  r.set_message(message);
+  r.clear_image();
+  return r;
+}
+
+network::Response append_text_on_jpg(core::server::instance& instance, network::Request req)
+{
+  network::Response r;
+  try {
+    r.set_image(append_text_in_jpeg(instance, req.image(), req.message()));
+    r.set_status(network::RS_SUCCESS);
+    r.set_message("success");
+  }
+  catch (const std::exception& e)
+  {
+    return make_error_response(network::RS_ERROR,e.what());
+  }
+  catch (...)
+  {
+    return make_error_response(network::RS_ERROR, "uncnown exception");
+  }
+
+  return r;
+}
+
+void process_request(core::server::instance& instance, std::shared_ptr<network::server::session> session, network::Request req)
+{
+  network::Response r;
+  try {
+    instance.thread_pool().enqueue([&instance, session, req]() {
+      session->write_message(append_text_on_jpg(instance, req).SerializeAsString());
+    });
+  }
+  catch (const async::exception& e)
+  {
+    session->write_message(make_error_response(network::RS_REJECTED, e.what()).SerializeAsString());
+  }
+  catch (const std::exception& e)
+  {
+    session->write_message(make_error_response(network::RS_ERROR, e.what()).SerializeAsString());
+  }
+  catch (...)
+  {
+    session->write_message(make_error_response(network::RS_ERROR, "uncnown exception").SerializeAsString());
+  }
+}
+
+network::Response reject(core::server::instance& instance)
+{
+  network::Response r;
+  r.set_status(network::RS_REJECTED);
+  r.set_message("rejected");
+
+  return r;
+}
+
+void test_server(int argc, char* argv[])
+{
+  try
+  {
+    core::server::instance instance(argc, argv);
+    if (!instance.settings()->abort())
+    {
+
+      network::server::server s(instance, process_request, reject);
+
+      instance.service().run();
+    }
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << "Exception: " << e.what() << "\n";
+  }
 }
 
 int main(int argc, char* argv[])
 {
   try {
-    test_app_text();
-    test_decode_jpeg();
-    test_encode_jpeg();
-    test_app_text_in_jpeg();
+    test_server(argc, argv);
   }
   catch (const std::exception &e)
   {
